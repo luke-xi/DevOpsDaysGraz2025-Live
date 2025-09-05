@@ -2,6 +2,12 @@ name: Release Pipeline
 
 on:
   push: {}
+  workflow_dispatch:
+    inputs:
+      version: 
+        description: Name or version
+        required: true
+        type: string
 
 jobs:
   release-pipeline:
@@ -28,8 +34,11 @@ jobs:
         run: dotnet test .\src\DevOpsDaysTasks.IntegrationTests
 
       # Problem: Hardcoded version
+      # could use git tags or github input (in our case we will use input i guess)
       - name: Build Release version
-        run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=0.1 /p:VersionName=Banana
+        env:
+          VERSION: ${{ inputs.version || "0.0.0" }}
+        run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=${{ env.VERSION }} /p:VersionName=Banana
 
       # Problem: We do not want to use the workshop folder
       - name: Chechout external files
@@ -38,6 +47,7 @@ jobs:
           repository: martinzimmermann/DevOpsDaysGraz2025-ExternalFiles
           path: ExternalFiles
 
+      # we used .\workshop_material\ExternalFiles\default-tasks.xml here but replaced it with the checkout above
       - name: Copy default-tasks.xml
         run: |
           mkdir DevOpsDaysTasks\Templates
