@@ -79,6 +79,37 @@ jobs:
           path: DevOpsDaysTasks
           name: DevOpsDaysTasks
   
+      # Release only if input.verision is set (in github ui with manual workflow trigger)
+      # Create ZIP
+      - name: Create ZIP
+        run: Compress-Archive -Path DevOpsDaysTasks -DestinationPath DevOpsDaysTasks.zip
+
+      - name: Github Release
+        uses: softprops/action-gh-release@v2
+        if: ${{ input.version }}
+        with:
+          name: DevOpsDaysTasks
+          tag_name: ${{ input.version }}
+          files: DevOpsDaysTasks.zip
+
+# infos from here in terms of release? https://github.com/marketplace/actions/github-release
+# name: Publish Release
+# on:
+#   push:
+#     tags:
+#       - 'v*'
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Create a Release
+#       uses: elgohr/Github-Release-Action@v5
+#       env:
+#         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       with:
+#         title: MyReleaseMessage
+  
         # run: |
         #   echo: "sers"
         #   echo: "du Wappler"
