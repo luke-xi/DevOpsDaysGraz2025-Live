@@ -20,3 +20,13 @@ jobs:
 
       - name: Run Core.Test
         run: dotnet test .\src\DevOpsDaysTasks.Core.Tests
+
+      - name: Run Integration Tests
+        run: dotnet test .\src\DevOpsDaysTasks.Core.Tests
+
+      - name: Build Release version
+        run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=0.1 /p:VersionName=Banana
+
+        # run: |
+        #   echo: "sers"
+        #   echo: "du Wappler"
