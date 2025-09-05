@@ -24,9 +24,11 @@ jobs:
       - name: Run Integration Tests
         run: dotnet test .\src\DevOpsDaysTasks.IntegrationTests
 
+      # Problem: Hardcoded version
       - name: Build Release version
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=0.1 /p:VersionName=Banana
 
+      # Problem: We do not want to use the workshop folder
       - name: Copy default-tasks.xml
         run: |
           mkdir DevOpsDaysTasks\Templates
@@ -37,9 +39,16 @@ jobs:
           mkdir DevOpsDaysTasks\Help
           copy .\workshop_material\Help.pdf .\DevOpsDaysTasks\Help\
 
-      - name: Sign exe
+      # Problem: NCert and Password
+      - name: Sign Release
         run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile .\workshop_material\devopsdays_tasks_codesign.pfx -PfxPassword Password
 
+      # We do not have a release
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+          with:
+            path: DevOpsDaysTasks
+            name: DevOpsDaysTasks
   
         # run: |
         #   echo: "sers"
