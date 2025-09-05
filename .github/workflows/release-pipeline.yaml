@@ -7,6 +7,9 @@ jobs:
   release-pipeline:
     name: Release Pipeline\
     runs-on: windows-latest
+    env:
+      CERT_NAME: cert.pfx
+      
     steps:
       - name: Hello Pipeline
         run: echo "Hello Pipeline ... lolz!  ... starting now ..."
