@@ -22,11 +22,21 @@ jobs:
         run: dotnet test .\src\DevOpsDaysTasks.Core.Tests
 
       - name: Run Integration Tests
-        run: dotnet test .\src\DevOpsDaysTasks.Core.Tests
+        run: dotnet test .\src\DevOpsDaysTasks.IntegrationTests
 
       - name: Build Release version
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=0.1 /p:VersionName=Banana
 
+      - name: Copy default-tasks.xml
+        run: copy .\workshop_material\default-tasks.xml .\DevOpsDaysTasks\Templates\
+
+      - name: Copy Help.pdf
+        run: copy .\workshop_material\Help.pdf .\DevOpsDaysTasks\Help\
+
+      - name: Sign exe
+        run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile .\workshop_material\devopsdays_tasks_codesign.pfx -PfxPassword Password
+
+  
         # run: |
         #   echo: "sers"
         #   echo: "du Wappler"
