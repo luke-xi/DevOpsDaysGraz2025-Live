@@ -39,9 +39,19 @@ jobs:
           mkdir DevOpsDaysTasks\Help
           copy .\workshop_material\Help.pdf .\DevOpsDaysTasks\Help\
 
-      # Problem: NCert and Password
+      # Problem: Cert and Password
+      # use secrets in github under settings > secrets and variables > actions
+      # not files but only strings can be stored
+
+      # first create the base64 certificate file and convert it 
+      - name: Create Cert
+        run: |
+          $base64 = "${{ secrets.SIGN_CERTIFICATE_PFX_BASE64 }}"
+          $content = [System.Convert]::FromBase64String($base64)
+          Content-Set ${{ env.CERT_NAME }} -Value $content -AsByteStream
+
       - name: Sign Release
-        run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile .\workshop_material\devopsdays_tasks_codesign.pfx -PfxPassword Password
+        run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile ${{ env.CERT_NAME }} -PfxPassword ${{ secrets.CERTIFICATE_PASSWORD }}
 
       # We do not have a release
       - name: Upload Artifact
