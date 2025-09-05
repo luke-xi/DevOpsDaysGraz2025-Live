@@ -86,10 +86,10 @@ jobs:
 
       - name: Github Release
         uses: softprops/action-gh-release@v2
-        if: ${{ input.version }}
+        if: ${{ inputs.version }}
         with:
           name: DevOpsDaysTasks
-          tag_name: ${{ input.version }}
+          tag_name: ${{ inputs.version }}
           files: DevOpsDaysTasks.zip
 
 # infos from here in terms of release? https://github.com/marketplace/actions/github-release
