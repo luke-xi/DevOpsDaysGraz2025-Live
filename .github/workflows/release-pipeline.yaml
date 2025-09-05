@@ -32,15 +32,21 @@ jobs:
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=0.1 /p:VersionName=Banana
 
       # Problem: We do not want to use the workshop folder
+      - name: Chechout external files
+        uses: actions/checkout@v4
+        with:
+          repository: martinzimmermann/DevOpsDaysGraz2025-ExternalFiles
+          path: ExternalFiles
+
       - name: Copy default-tasks.xml
         run: |
           mkdir DevOpsDaysTasks\Templates
-          copy .\workshop_material\default-tasks.xml .\DevOpsDaysTasks\Templates\
+          copy ExternalFiles\default-tasks.xml .\DevOpsDaysTasks\Templates\
 
       - name: Copy Help.pdf
         run: |
           mkdir DevOpsDaysTasks\Help
-          copy .\workshop_material\Help.pdf .\DevOpsDaysTasks\Help\
+          copy ExternalFiles\Help.pdf .\DevOpsDaysTasks\Help\
 
       # Problem: Cert and Password
       # use secrets in github under settings > secrets and variables > actions
