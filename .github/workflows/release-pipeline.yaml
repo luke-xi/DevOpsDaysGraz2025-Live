@@ -28,12 +28,14 @@ jobs:
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=0.1 /p:VersionName=Banana
 
       - name: Copy default-tasks.xml
-        mkdir DevOpsDaysTasks\Templates
-        run: copy .\workshop_material\default-tasks.xml .\DevOpsDaysTasks\Templates\
+        run: |
+          mkdir DevOpsDaysTasks\Templates
+          copy .\workshop_material\default-tasks.xml .\DevOpsDaysTasks\Templates\
 
       - name: Copy Help.pdf
-        mkdir DevOpsDaysTasks\Help
-        run: copy .\workshop_material\Help.pdf .\DevOpsDaysTasks\Help\
+        run: |
+          mkdir DevOpsDaysTasks\Help
+          copy .\workshop_material\Help.pdf .\DevOpsDaysTasks\Help\
 
       - name: Sign exe
         run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile .\workshop_material\devopsdays_tasks_codesign.pfx -PfxPassword Password
