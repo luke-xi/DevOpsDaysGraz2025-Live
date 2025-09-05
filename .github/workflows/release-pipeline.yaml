@@ -37,7 +37,7 @@ jobs:
       # could use git tags or github input (in our case we will use input i guess)
       - name: Build Release version
         env:
-          VERSION: ${{ inputs.version || "0.0.0" }}
+          VERSION: ${{ inputs.version || '0.0.0' }}
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=${{ env.VERSION }} /p:VersionName=Banana
 
       # Problem: We do not want to use the workshop folder
